@@ -3,6 +3,7 @@ What you will get:
 - PHP-FPM on Alpine
 - Nginx
 - Varnish
+- Supervisor
 - Bedrock + WP
 
 ## How to use
