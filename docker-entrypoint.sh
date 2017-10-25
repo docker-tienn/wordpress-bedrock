@@ -49,7 +49,7 @@ if [ -z "$DB_PASSWORD" ]; then
 fi
 
 if [ -z "$DB_HOST" ]; then
-  DB_HOST=localhost
+  DB_HOST="mysql:3306"
 fi
 
 if [ -z "$DB_PREFIX" ]; then
@@ -61,10 +61,9 @@ if [ -z "$WP_ENV" ]; then
 fi
 
 if [ -z "$WP_HOME" ]; then
-  WP_HOME=http://localhost
+  WP_HOME="http://localhost"
 fi
 
-alias wp="wp --allow-root"
 wp --allow-root package install aaemnnosttv/wp-cli-dotenv-command:^1.0
 wp --allow-root dotenv init --with-salts --force
 
@@ -75,7 +74,7 @@ wp --allow-root dotenv set DB_PASSWORD "$DB_PASSWORD" --quote-double
 wp --allow-root dotenv set DB_HOST $DB_HOST
 wp --allow-root dotenv set DB_PREFIX $DB_PREFIX
 wp --allow-root dotenv set WP_ENV $WP_ENV
-wp --allow-root dotenv set WP_HOME "$WP_HOME" --quote-double
+wp --allow-root dotenv set WP_HOME $WP_HOME
 
 for e in "${envs[@]}"; do
   unset "$e"
