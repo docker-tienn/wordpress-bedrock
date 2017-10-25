@@ -1,4 +1,9 @@
 # Docker image for WP Bedrock
+What you will get:
+- PHP-FPM on Alpine
+- Nginx
+- Varnish
+- Bedrock + WP
 
 ## How to use
 Simply run: `docker run -it --name bedrock-wp -p 80:80 --link db:mysql -d tiptopcoder/wordpress-bedrock`
