@@ -21,4 +21,3 @@ Simply run: `docker run -it --name bedrock-wp -p 80:80 --link db:mysql -d tiptop
 ## Notice
 - If you want to define different expose port rather than `80`, define this: `-e WP_HOME="http://localhost:<yourport>"`
 - If you want to define different database container name or different database host rather than `db`, define this: `-e DB_HOST="<db_containername>:<db_port>"` or `-e DB_HOST="<db_host>:<db_port>"`
-
