@@ -31,6 +31,7 @@ envs=(
   WP_ENV
   WP_HOME
   WP_SITEURL
+  WP_CACHE_KEY_SALT
 )
 for e in "${envs[@]}"; do
   file_env "$e"
@@ -64,10 +65,16 @@ if [ -z "$WP_HOME" ]; then
   WP_HOME="http://localhost"
 fi
 
+if [ -z "$WP_CACHE_KEY_SALT" ]; then
+  WP_CACHE_KEY_SALT="WpCacheKeySalt"
+fi
+
+echo "Creating salts key..."
 wp --allow-root package install aaemnnosttv/wp-cli-dotenv-command:^1.0
 wp --allow-root dotenv init --with-salts --force
 
 ### Setting up WP Bedrock
+echo "Setting env var..."
 wp --allow-root dotenv set DB_NAME $DB_NAME
 wp --allow-root dotenv set DB_USER $DB_USER
 wp --allow-root dotenv set DB_PASSWORD "$DB_PASSWORD" --quote-double
@@ -75,9 +82,16 @@ wp --allow-root dotenv set DB_HOST $DB_HOST
 wp --allow-root dotenv set DB_PREFIX $DB_PREFIX
 wp --allow-root dotenv set WP_ENV $WP_ENV
 wp --allow-root dotenv set WP_HOME $WP_HOME
+wp --allow-root dotenv set WP_CACHE_KEY_SALT $WP_CACHE_KEY_SALT
+
+### Install Redis Cache plugins and update dropin
+echo "Configuring Object Redis Cache plugin ..."
+wp --allow-root plugin install redis-cache --activate
+wp --allow-root redis update-dropin
 
 for e in "${envs[@]}"; do
   unset "$e"
 done
 
+echo "Running supervisor..."
 exec /usr/bin/supervisord -n -c /etc/supervisord.conf
